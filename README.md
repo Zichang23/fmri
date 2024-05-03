@@ -1,4 +1,4 @@
-## High-dimensional locally stationary models for identifying neuroimaging biomarkers in Autism Spectrum Disorder
+## High-Dimensional Locally Stationary Models for Identifying Neuroimaging Biomarkers in Autism Spectrum Disorder
 
 ### Introduction
 
