@@ -133,11 +133,5 @@ mconn <-  function(x, alpha=0.05, s, tt){
 
 #read in data
 asd <- read.table("Caltech_0051465_rois_aal.1D", header = F)
-
 #apply the function to the data
-temp=mconn(x=asd, alpha=0.05, s=0, tt=0)
-dim(mconn(x=asd, alpha=0.05, s=2, tt=c(50,100))[[1]])
-length(mconn(x=asd, alpha=0.05, s=2, tt=c(30,100)))
-#output number of edges
-temp2=sapply(1:length(temp), function(x)table(temp[[x]])[2])
-names(temp2) <- 1:length(temp)
+mconn(x=asd, alpha=0.05, s=1, tt=82)
