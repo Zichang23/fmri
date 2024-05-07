@@ -1,4 +1,5 @@
 library(astsa)
+
 #create function mconn to calculate connectivity matrix
 mconn <-  function(x, alpha=0.05, s, tt){
   #x: time series matrix, s: segments, t: partition time point 
@@ -132,6 +133,6 @@ mconn <-  function(x, alpha=0.05, s, tt){
 }
 
 #read in data
-asd <- read.table("Caltech_0051465_rois_aal.1D", header = F)
+asd <- read.table("Caltech_0051475_rois_aal.1D", header = F)
 #apply the function to the data
-mconn(x=asd, alpha=0.05, s=1, tt=82)
+mconn(x=asd, alpha=0.05, s=1, tt=41)
