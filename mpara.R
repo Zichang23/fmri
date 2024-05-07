@@ -23,10 +23,10 @@ mpara <- function(x){#x:connectivity matrix
 }
 
 #read in data
-asd <- read.table("Caltech_0051465_rois_aal.1D", header = F)
+asd <- read.table("Caltech_0051475_rois_aal.1D", header = F)
 # library(dplyr)
 asd1 <- asd %>% mutate_all(~(scale(.) %>% as.vector))
 #apply the function to the data
 freq0 <- seq(0.01, 0.1, 0.01)
-temp <- mconn2(x=asd1, alpha=0.05, s=1, tt=82, freq0=freq0)
+temp <- mconn2(x=asd1, alpha=0.05, s=1, tt=41, freq0=freq0)
 mpara(temp)
