@@ -444,14 +444,7 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
 library(astsa)
 #read in data
 x <- read.table("Leuven_2_0050732_rois_aal.1D", header = F)
-# freq0 <- seq(0.01,0.1,0.01)
+#selected frequencies
 freq0 <- seq(0.01,0.1,0.016)
-round(freq0/0.18*0.1,3) # convert to Hz
 #apply the function to the data
-temp = mconn2(x=x, alpha=0.01, s=1, tt=66, freq0=freq0)
-#output number of edges for each frequency
-sapply(1:length(temp), function(x)table(temp[[x]])[2])
-dim(temp[[1]])
-temp2 = medge(temp)
-library(brainconn)
-brainconn(atlas ="aal116", conmat=temp[[1]], all.nodes = F, node.size= 1, edge.width=0.5, edge.color= "blue", view="top")
+mconn2(x=x, alpha=0.01, s=1, tt=82, freq0=freq0)
