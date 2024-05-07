@@ -1,18 +1,5 @@
 # install.packages("iZID")
 library(iZID)
-set.seed(2024)
-
-#network: SRN, freq=0.01
-x1 = c(1,5,4,0,8,0,2,1,5,2,5,1,0,4,4,3,0,2,3,1,4,3,2,5,3,3,3,2,0,1)
-x2 = c(1,3,3,1,2,1,7,4,0,3,7,3,15,6,1,2,2,1,4,3,0,3,4,2,16,3,3,6,0,2)
-
-#network: VAN, freq=0.04, age >= 18 yrs (use last version HT: same mean, use new version HT: same mean)
-x1 = c(3,1,1,0,0,2,1,0,0,3,1,1,2,1,1,1,2,3,3,3,3,1,1,1,1,0,0,1,2,1)
-x2 = c(0,2,0,1,3,0,4,2,2,2,3,1,2,0,1,1,0,3,0,2,1,3,1,1,5,2,3,3,3,2)
-
-#network: SMN, freq=0.03, age >= 18 yrs  (use last version HT: same mean, use new version HT: same mean)
-x1 = c(0,0,0,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,2,2,0,1)
-x2 = c(0,1,0,0,0,0,1,0,1,1,0,3,2,0,1,1,0,0,0,0,0,1,1,2,2,0,1,0,0,0)
 
 #step 1: check distribution for data
 check.dist <- function(x1,x2){#x1,x2 are vectors
@@ -189,4 +176,10 @@ comp.dist <- function(x1, x2, B=500){#x1,x2 are vectors
   }
 }
 
+#apply the above function to real data
+set.seed(2024)
+#data (network: SRN, age >=18, freq=0.01)
+x1 = c(1,5,4,0,8,0,2,1,5,2,5,1,0,4,4,3,0,2,3,1,4,3,2,5,3,3,3,2,0,1)
+x2 = c(1,3,3,1,2,1,7,4,0,3,7,3,15,6,1,2,2,1,4,3,0,3,4,2,16,3,3,6,0,2)
+#apply the function
 comp.dist(x1,x2)
