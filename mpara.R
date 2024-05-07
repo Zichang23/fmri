@@ -27,5 +27,6 @@ asd <- read.table("Caltech_0051465_rois_aal.1D", header = F)
 # library(dplyr)
 asd1 <- asd %>% mutate_all(~(scale(.) %>% as.vector))
 #apply the function to the data
-temp=mconn2(x=asd1, alpha=0.05, s=1, tt=82, freq0=c(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1))
+freq0 <- seq(0.01, 0.1, 0.01)
+temp <- mconn2(x=asd1, alpha=0.05, s=1, tt=82, freq0=freq0)
 mpara(temp)
