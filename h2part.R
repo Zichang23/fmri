@@ -1,4 +1,3 @@
-# install.packages("iZID")
 library(iZID)
 
 #step 1: check distribution for data
