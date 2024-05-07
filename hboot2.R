@@ -1,16 +1,7 @@
 library(iZID)
-#data from ASD (x1) and control group (x2)
-x1 = c(2,0,3,2,3,2,0,1,2,2,2,1,2,3,1,3,0,1,0,1,1,1,1,0,1,1,0,2,1,0)
-x2 = c(1,1,0,1,2,2,2,0,2,5,0,3,1,0,0,3,2,1,2,4,3,4,2,2,6,1,3,1,2,1)
-#apply the functions below to data
-aa<- check.dist(x1,x2)
-comp.dist(x1,x2)
-
-aa <- check.dist1(x1,x2)
-comp.dist1(x1,x2)
 
 #function to check dist for x1 or x2
-check.dist1 <- function(x1,x2){#x1,x2 are vectors
+check.dist <- function(x1,x2){#x1,x2 are vectors
   # d1=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='zip')
   # d2=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='zinb')
   d3=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='Poisson')
