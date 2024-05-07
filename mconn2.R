@@ -443,7 +443,7 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
 
 library(astsa)
 #read in data
-x <- read.table("Leuven_2_0050732_rois_aal.1D", header = F)
+x <- read.table("Caltech_0051465_rois_aal.1D", header = F)
 #selected frequencies
 freq0 <- seq(0.01,0.1,0.016)
 #apply the function to the data
