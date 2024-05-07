@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This page contains functions related to the paper "High-dimensional locally stationary models for identifying neuroimaging biomarkers in Autism Spectrum Disorder". 
+This page includes functions associated with the paper "High-dimensional locally stationary models for identifying neuroimaging biomarkers in Autism Spectrum Disorder". 
 
 `h2part` can be used to conduct hypothesis test comparing distributions (Poisson, Negative Binomial, Zero-Inflated Poisson, and Zero-Inflated Negative Binomial) of edge counts for ASD group and control group according to paper Togo et al.
 
