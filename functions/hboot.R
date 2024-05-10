@@ -140,9 +140,6 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
           (mean(x2)>=boot.avg1[[2]] & mean(x2)<=boot.avg1[[3]]) ){
         pval = 1
       }
-      
-      # boot.stat <- abs(boot.avg1[[1]]-boot.avg2[[1]])
-      # pval <- sum(boot.stat >= abs(mean(x1)-mean(x2)))/B
       hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
@@ -167,8 +164,6 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
           (mean(x2)>=boot.avg1[[2]] & mean(x2)<=boot.avg1[[3]]) ){
         pval = 1
       }
-      # boot.stat <-abs(boot.avg1[[1]]-boot.avg2[[1]])
-      # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
       hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
@@ -192,8 +187,6 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
           (mean(x2)>=quantile(boot.avg1,probs = c(0.025)) & mean(x2)<=quantile(boot.avg1,probs = c(0.975))) ){
         pval = 1
       }
-      # boot.stat <- abs(boot.avg1-boot.avg2)
-      # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
       hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
@@ -219,8 +212,6 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
           (mean(x2)>=quantile(boot.avg1,probs = c(0.025)) & mean(x2)<=quantile(boot.avg1,probs = c(0.975))) ){
         pval = 1
       }
-      # boot.stat <- abs(boot.avg1-boot.avg2)
-      # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
       hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
