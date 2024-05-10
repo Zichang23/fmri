@@ -2,7 +2,7 @@
 library(iZID)
 
 #step 1
-check.dist <- function(x1,x2){#x1,x2 are vectors
+check.dist <- function(x1, x2, alpha=0.05){#x1,x2 are vectors
   d1=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='zip')
   d2=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='zinb')
   d3=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='Poisson')
@@ -12,7 +12,7 @@ check.dist <- function(x1,x2){#x1,x2 are vectors
   dist1 <- c("zip", "zinb", "Poisson", "nb")
   id <- 1:4
   dat1 <- data.frame(cbind(id, dist1, pval1, llik1))
-  dat2 <- dat1[dat1$pval1 >=0.05,]
+  dat2 <- dat1[dat1$pval1 >=alpha,]
   dat3 <- dat2[dat2$llik1==max(as.numeric(dat2$llik1)),]
   dat4 <- dat3[dat3$pval1==max(as.numeric(dat3$pval1)),]
   avg1 <- round(mean(x1),4)
@@ -26,7 +26,7 @@ check.dist <- function(x1,x2){#x1,x2 are vectors
   llik2 <- round(c(d5$mle_ori[3], d6$mle_ori[4], d7$mle_ori[2], d8$mle_ori[3]),5)
   dist2 <- c("zip", "zinb", "Poisson", "nb")
   dat5 <- data.frame(cbind(id, dist2, pval2, llik2))
-  dat6 <- dat5[dat5$pval2 >=0.05,]
+  dat6 <- dat5[dat5$pval2 >=alpha,]
   dat7 <- dat6[dat6$llik2==max(as.numeric(dat6$llik2)),]
   dat8 <- dat7[dat7$pval2 == max(as.numeric(dat7$pval2)),]
   avg2 <- round(mean(x2),4)
@@ -113,7 +113,7 @@ boot.znb.mean = function(r.est,p.est,prob.est,n=100,B=500,sn){
   return(outl)
 } # end function boot.znb.mean
 
-comp.dist <- function(x1, x2, B=500){#x1,x2 are vectors
+comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
   aa <- check.dist(x1,x2)
   dist1 <- as.numeric(aa[1,1])
   dist2 <- as.numeric(aa[2,1])
@@ -143,7 +143,7 @@ comp.dist <- function(x1, x2, B=500){#x1,x2 are vectors
       
       # boot.stat <- abs(boot.avg1[[1]]-boot.avg2[[1]])
       # pval <- sum(boot.stat >= abs(mean(x1)-mean(x2)))/B
-      hyp <- ifelse(pval>0.05, "H0", "H1")
+      hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
@@ -169,7 +169,7 @@ comp.dist <- function(x1, x2, B=500){#x1,x2 are vectors
       }
       # boot.stat <-abs(boot.avg1[[1]]-boot.avg2[[1]])
       # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
-      hyp <- ifelse(pval>0.05, "H0", "H1")
+      hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
@@ -194,7 +194,7 @@ comp.dist <- function(x1, x2, B=500){#x1,x2 are vectors
       }
       # boot.stat <- abs(boot.avg1-boot.avg2)
       # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
-      hyp <- ifelse(pval>0.05, "H0", "H1")
+      hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
@@ -221,7 +221,7 @@ comp.dist <- function(x1, x2, B=500){#x1,x2 are vectors
       }
       # boot.stat <- abs(boot.avg1-boot.avg2)
       # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
-      hyp <- ifelse(pval>0.05, "H0", "H1")
+      hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
