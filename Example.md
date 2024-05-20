@@ -21,15 +21,20 @@ Below are all the arguments in `mconn2`. `x` is the dataset in format ".D". alph
 mconn2(x, alpha = 0.05, s, tt, freq0)
 ```
 
-Below is the argument in `mnet`. `x` is the connectivity matrix, which can be get from `mconn2`. We will first apply `mconn2` to the dataset `Caltech_0051475_rois_aal.1D` to get a connectivity matrix for each specific  frequncy. Then we will plug the connectivity matrix into `mnet` to get the number of edge for each network.
+Below is the argument in `mnet`. `x` is the connectivity matrix, which can be get from `mconn2`. 
 
 ```{}
 mnet(x)
 ```
 
+### Application
+
+We will first apply `mconn2` to the dataset `Caltech_0051475_rois_aal.1D` to get a connectivity matrix for each specific  frequncy. Then we will plug the connectivity matrix into `mnet` to get the number of edge for each network.
+
 ```{r}
 #read in data
 ctrl <- read.table("Caltech_0051475_rois_aal.1D", header = F)
+#overview of ctrl
 head(ctrl[,1:8])
 ```
 
@@ -50,6 +55,7 @@ freq0
 library(astsa)
 myconn <- mconn2(x=ctrl1, alpha=0.05, s=1, tt=41, freq0=freq0)
 mynet <- mnet(myconn)
+#check the output
 mynet
 ```
 
