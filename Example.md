@@ -27,27 +27,24 @@ Below is the argument in `mnet`. `x` is the connectivity matrix, which can be ge
 mnet(x)
 ```
 
-```{r,message=FALSE}
+```{r}
 #read in data
 ctrl <- read.table("Caltech_0051475_rois_aal.1D", header = F)
-dim(ctrl)
 head(ctrl[,1:8])
+```
+```{r}
 #standardize the dataset ctrl (optional step)
 library(dplyr)
 ctrl1 <- ctrl %>% mutate_all(~(scale(.) %>% as.vector))
 #select specific frequencies
 freq0 <- seq(0.01,0.1,0.01)
 freq0
+```
+
+```{r}
 #apply functions to the data
 library(astsa)
 myconn <- mconn2(x=ctrl1, alpha=0.05, s=1, tt=41, freq0=freq0)
-#check type of the output from function mconn2
-class(myconn)
-#we get a connectivity matrix under each frequency
-length(myconn)
-#check the dimension of each connecitivty matrix, which should equal 116. This is the 116 altas used in the dataset ctrl.
-dim(myconn[[1]])
 mynet <- mnet(myconn)
-class(mynet)
 mynet
 ```
