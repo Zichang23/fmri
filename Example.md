@@ -32,6 +32,9 @@ mnet(x)
 ctrl <- read.table("Caltech_0051475_rois_aal.1D", header = F)
 head(ctrl[,1:8])
 ```
+
+<img src="docs/1.png" width="600" />
+
 ```{r}
 #standardize the dataset ctrl (optional step)
 library(dplyr)
@@ -40,6 +43,7 @@ ctrl1 <- ctrl %>% mutate_all(~(scale(.) %>% as.vector))
 freq0 <- seq(0.01,0.1,0.01)
 freq0
 ```
+<img src="docs/2.png" width="500" />
 
 ```{r}
 #apply functions to the data
@@ -48,3 +52,5 @@ myconn <- mconn2(x=ctrl1, alpha=0.05, s=1, tt=41, freq0=freq0)
 mynet <- mnet(myconn)
 mynet
 ```
+
+<img src="docs/3.png" width="200" />
