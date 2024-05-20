@@ -43,7 +43,7 @@ ctrl1 <- ctrl %>% mutate_all(~(scale(.) %>% as.vector))
 freq0 <- seq(0.01,0.1,0.01)
 freq0
 ```
-<img src="docs/2.png" width="500" />
+<img src="docs/2.png" width="460" />
 
 ```{r}
 #apply functions to the data
@@ -53,4 +53,4 @@ mynet <- mnet(myconn)
 mynet
 ```
 
-<img src="docs/3.png" width="200" />
+<img src="docs/3.png" width="250" />
