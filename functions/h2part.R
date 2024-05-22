@@ -174,11 +174,3 @@ comp.dist <- function(x1, x2, B=500){#x1,x2 are vectors
     }
   }
 }
-
-#apply the above function to real data
-set.seed(2024)
-#data (network: SRN, age >=18, freq=0.01)
-x1 = c(1,5,4,0,8,0,2,1,5,2,5,1,0,4,4,3,0,2,3,1,4,3,2,5,3,3,3,2,0,1)
-x2 = c(1,3,3,1,2,1,7,4,0,3,7,3,15,6,1,2,2,1,4,3,0,3,4,2,16,3,3,6,0,2)
-#apply the function
-comp.dist(x1,x2)
