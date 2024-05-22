@@ -131,8 +131,3 @@ mconn <-  function(x, alpha=0.05, s, tt){
     }
   }
 }
-
-#read in data
-asd <- read.table("Caltech_0051475_rois_aal.1D", header = F)
-#apply the function to the data
-mconn(x=asd, alpha=0.05, s=1, tt=41)
