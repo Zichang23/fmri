@@ -17,7 +17,6 @@ mpara <- function(x){#x:connectivity matrix
   
   result0 <- lapply(seq(1,107,by=2), function(z)func0(z))
   result <- Reduce('+', result0)
-  #https://datascienceparichay.com/article/r-list-sum/
   #sum up number of edges for each frequency
   return(result)
 }
