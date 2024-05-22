@@ -1,3 +1,5 @@
+library(astsa)
+
 #create function mconn to calculate connectivity matrix
 mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
   #x: time series matrix (no need to standardize), s: segments, t: partition time point , freq0: specific frequencies
@@ -440,11 +442,3 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
     }
   } 
 }
-
-library(astsa)
-#read in data
-x <- read.table("Caltech_0051475_rois_aal.1D", header = F)
-#selected frequencies
-freq0 <- seq(0.01, 0.1, 0.01)
-#apply the function to the data
-mconn2(x=x, alpha=0.01, s=1, tt=41, freq0=freq0)
