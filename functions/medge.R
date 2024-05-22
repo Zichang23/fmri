@@ -33,12 +33,3 @@ medge <- function(x){#x:connectivity matrix
   result <- list("Total"=edge.all, "Left"=edge.l, "Right"=edge.r, "Inter"=edge.inter, "Vermis"=edge.v)#https://www.geeksforgeeks.org/r-lists/
   return(result)
 }
-
-#read in data
-asd <- read.table("Caltech_0051475_rois_aal.1D", header = F)
-library(dplyr)
-asd1 <- asd %>% mutate_all(~(scale(.) %>% as.vector))
-freq0 = seq(0.01, 0.1, 0.01)
-#apply the function to the data
-temp=mconn2(x=asd1, alpha=0.05, s=1, tt=41, freq0=freq0)
-medge(temp)
