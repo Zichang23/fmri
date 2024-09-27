@@ -9,13 +9,13 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
   
   ff <-  function(x){
     L <- floor(sqrt(dim(x)[1]))
-    mspec  <-  mvspec(x, spans=L, fast =F, kernel="daniell", plot=F)
+    mspec  <-  mvspec(x_a, kernel("daniell",L), plot=F)
     Fstat <- apply(mspec$coh, 2, function(y)(y/(1-y))*(L-1))
-    Fq <-  qf(1-alpha, 2, 2*L-2)
+    Fq <-  qf(1-alpha, 2, mspec$df-2)
     Conn <- ifelse(Fstat > Fq, 1, 0)
     nn <- nrow(Conn)
-    fun <- function(x){
-      m[lower.tri(m)] <- Conn[x,] 
+    fun <- function(x_b){
+      m[lower.tri(m)] <- Conn[x_b,] 
       m[upper.tri(m)] <- t(m)[upper.tri(t(m))]
       diag(m) <- 0
       return(m)
@@ -47,10 +47,10 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
       combos <- abs(outer(freq2, freq1, "-"))
       freq.min <- apply(combos,2,which.min)
       m3 <- m2[c(freq.min)]
-      f1 <- function(x){
-        m <- matrix(1, ncol = p, nrow = p)
-        m[!(m1[[x]]==1 & m3[[x]]==1)] <- 0
-        return(m)
+      f1 <- function(x_c){
+        m_a <- matrix(1, ncol = p, nrow = p)
+        m_a[!(m1[[x_c]]==1 & m3[[x_c]]==1)] <- 0
+        return(m_a)
       }
       result <- lapply(1:length(freq1), f1)
       combo0 <- abs(outer(freq1, freq0, "-"))
@@ -63,10 +63,10 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
       combos <- abs(outer(freq1, freq2, "-"))
       freq.min <- apply(combos,2,which.min)
       m3 <- m1[c(freq.min)]
-      f2 <- function(x){
-        m <- matrix(1, ncol = p, nrow = p)
-        m[!(m2[[x]]==1 & m3[[x]]==1)] <- 0
-        return(m)
+      f2 <- function(x_d){
+        m_b <- matrix(1, ncol = p, nrow = p)
+        m_b[!(m2[[x_d]]==1 & m3[[x_d]]==1)] <- 0
+        return(m_b)
       }
       result <- lapply(1:length(freq2), f2)
       combo0 <- abs(outer(freq2, freq0, "-"))
