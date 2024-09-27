@@ -29,7 +29,7 @@ mnet(x)
 
 ### Application
 
-We will first apply `mconn2` to the dataset `Caltech_0051475_rois_aal.1D` to get a connectivity matrix for each specific  frequncy. Then we will plug the connectivity matrix into `mnet` to get the number of edge for each network.
+We will first apply `mconn2` to the dataset `Caltech_0051475_rois_aal.1D` to get a connectivity matrix for each specific  frequency. Then we will plug the connectivity matrix into `mnet` to get the number of edge for each network.
 
 ```{r}
 #read in data
