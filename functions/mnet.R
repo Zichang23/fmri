@@ -1,6 +1,6 @@
 #create function medge to calculate edges
-mnet <- function(x){#x:connectivity matrix
-  p <- ncol(x[[1]])
+mnet <- function(x){#x:a list of connectivity matrix across different frequencies
+  p <- ncol(x[[1]]) # number of columns (brain networks)
   
   #subset edges for certain brain regions
   x1 <- lapply(1:length(x), function(y)t(x[[y]])[lower.tri(x[[y]])])#convert off-diagonal part of each connectivity matrix into a vector, do this for each frequency
