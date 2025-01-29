@@ -20,7 +20,7 @@ Below are all the arguments in `mconn2`. `x` is the dataset in format ".D". `alp
 ```{}
 mconn2(x, alpha = 0.05, s, tt, freq0)
 ```
-Below is the argument in `mnet`. The connectivity matrix `x` can be obtained from `mconn2`.
+Below is the argument in `mnet`. The connectivity matrix or a list of connectivity matrices `x` can be obtained from `mconn2`.
 ```{}
 mnet(x)
 ```
