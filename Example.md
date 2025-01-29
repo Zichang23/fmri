@@ -15,7 +15,7 @@ Here we will use two functions, `mconn2` and `mnet`.
 
 `mnet` is a function to calculate number of edges for all brain networks.
 
-Below are all the arguments in `mconn2`. `x` is the dataset in format ".D". alpha is the significance level, the default value is 0.05. `s` is the number of stationary time series within the dataset `x`. `tt` is the time point for each stationary time series segment. `freq0` are the specific frequencies we would like to focus.
+Below are all the arguments in `mconn2`. `x` is the dataset in format ".D". `alpha` is the significance level, the default value is 0.05. `s` is the number of stationary time series within the dataset `x`. `tt` is the time point for each stationary time series segment. `freq0` are the specific frequencies we would like to focus.
 
 ```{}
 mconn2(x, alpha = 0.05, s, tt, freq0)
