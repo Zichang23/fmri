@@ -8,23 +8,33 @@ mconn <-  function(x, alpha=0.05, s, tt){
   m <- matrix(NA, ncol = p, nrow = p)
   
   ff <-  function(x){
-    L <- floor(sqrt(dim(x)[1]))
-    mspec  <-  mvspec(x, spans=L, fast=F, plot=F, kernel="daniell")
-    Fstat <- apply(mspec$coh, 2, function(y)(y/(1-y))*(L-1))
-    Fq <-  qf(1-alpha, 2, 2*L-2)
-    Conn <- ifelse(Fstat > Fq, 1, 0)
+    m <- floor(sqrt(dim(x)[1]))
+    mspec  <-  mvspec(x, spans=c(2*m+1,2*m+1), kernel="daniell", plot=F)
+    Fstat <- apply(mspec$coh, 2, function(y)(y/(1-y))*(2*m))
+    pval <- 1-pf(Fstat, 2, 2*(2*m+1) - 2)
+    pval1 <- sapply(1:ncol(pval), function(x) p.adjust(pval[,x], method = "bonferroni", n=2*length(pval[,x])))
+    Conn <- ifelse(pval1 < alpha, 1, 0)
     nn <- nrow(Conn)
-    fun <- function(x){
-      m[lower.tri(m)] <- Conn[x,] 
-      m[upper.tri(m)] <- t(m)[upper.tri(t(m))]
-      diag(m) <- 0
-      return(m)
+    
+    fun <- function(fx){
+      # Create a vector with appropriate length
+      vec <- Conn[fx,]  # Length of upper diagonal (excluding main diagonal)
+      # Get indices of upper diagonal (excluding main diagonal)
+      upper_idx <- which(col(m11) > row(m11), arr.ind = TRUE)
+      # Fill in column-wise
+      m11[upper_idx[order(upper_idx[,2], upper_idx[,1]), ]] <- vec
+      # Copy upper triangle to lower triangle to make it symmetric
+      m11[lower.tri(m11)] <- t(m11)[lower.tri(m11)]
+      diag(m11) <- 0
+      return(m11)
     }
+    
     result <- lapply(1:nn, fun)
     return(result)
   }
+  
+  
   if(s==0){
-     # ifelse(tt==0, ff(x), print("Wrong input: if s=0, please type tt=0"))
     ff(x)
   }
   

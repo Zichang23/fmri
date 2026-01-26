@@ -5,26 +5,34 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
   #x: time series matrix (no need to standardize), s: segments, t: partition time point , freq0: specific frequencies
   p <- ncol(x)
   n <- nrow(x)
-  m <- matrix(NA, ncol = p, nrow = p)
+  m11 <- matrix(NA, ncol = p, nrow = p)
   
   ff <-  function(x){
-    L <- floor(sqrt(dim(x)[1]))
-    mspec  <-  mvspec(x_a, kernel("daniell",L), plot=F)
-    Fstat <- apply(mspec$coh, 2, function(y)(y/(1-y))*(L-1))
-    Fq <-  qf(1-alpha, 2, mspec$df-2)
-    Conn <- ifelse(Fstat > Fq, 1, 0)
+    m <- floor(sqrt(dim(x)[1]))
+    mspec  <-  mvspec(x, spans=c(2*m+1,2*m+1), kernel="daniell", plot=F)
+    Fstat <- apply(mspec$coh, 2, function(y)(y/(1-y))*(2*m))
+    pval <- 1-pf(Fstat, 2, 2*(2*m+1) - 2)
+    pval1 <- sapply(1:ncol(pval), function(x) p.adjust(pval[,x], method = "bonferroni", n=2*length(pval[,x])))
+    Conn <- ifelse(pval1 < alpha, 1, 0)
     nn <- nrow(Conn)
-    fun <- function(x_b){
-      m[lower.tri(m)] <- Conn[x_b,] 
-      m[upper.tri(m)] <- t(m)[upper.tri(t(m))]
-      diag(m) <- 0
-      return(m)
+    
+    fun <- function(fx){
+      # Create a vector with appropriate length
+      vec <- Conn[fx,]  # Length of upper diagonal (excluding main diagonal)
+      # Get indices of upper diagonal (excluding main diagonal)
+      upper_idx <- which(col(m11) > row(m11), arr.ind = TRUE)
+      # Fill in column-wise
+      m11[upper_idx[order(upper_idx[,2], upper_idx[,1]), ]] <- vec
+      # Copy upper triangle to lower triangle to make it symmetric
+      m11[lower.tri(m11)] <- t(m11)[lower.tri(m11)]
+      diag(m11) <- 0
+      return(m11)
     }
+    
     result <- lapply(1:nn, fun)
     return(result)
   }
   if(s==0){
-    # if(s==0 && tt==0){stop("Wrong input: if s=0, please type tt=0")}else{ff(x)}
     result <- ff(x)
     freq1 <- (1:floor(n/2))/n
     combo0 <- abs(outer(freq1, freq0, "-"))
@@ -47,10 +55,10 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
       combos <- abs(outer(freq2, freq1, "-"))
       freq.min <- apply(combos,2,which.min)
       m3 <- m2[c(freq.min)]
-      f1 <- function(x_c){
-        m_a <- matrix(1, ncol = p, nrow = p)
-        m_a[!(m1[[x_c]]==1 & m3[[x_c]]==1)] <- 0
-        return(m_a)
+      f1 <- function(x){
+        m <- matrix(1, ncol = p, nrow = p)
+        m[!(m1[[x]]==1 & m3[[x]]==1)] <- 0
+        return(m)
       }
       result <- lapply(1:length(freq1), f1)
       combo0 <- abs(outer(freq1, freq0, "-"))
@@ -63,10 +71,10 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
       combos <- abs(outer(freq1, freq2, "-"))
       freq.min <- apply(combos,2,which.min)
       m3 <- m1[c(freq.min)]
-      f2 <- function(x_d){
-        m_b <- matrix(1, ncol = p, nrow = p)
-        m_b[!(m2[[x_d]]==1 & m3[[x_d]]==1)] <- 0
-        return(m_b)
+      f2 <- function(x){
+        m <- matrix(1, ncol = p, nrow = p)
+        m[!(m2[[x]]==1 & m3[[x]]==1)] <- 0
+        return(m)
       }
       result <- lapply(1:length(freq2), f2)
       combo0 <- abs(outer(freq2, freq0, "-"))
