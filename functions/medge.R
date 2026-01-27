@@ -1,4 +1,4 @@
-#create function medge to calculate edges
+#create function medge to calculate edges (assume connectivity matrices are symmetric)
 medge <- function(x){#x:connectivity matrix
   p <- ncol(x[[1]])
   
@@ -7,7 +7,7 @@ medge <- function(x){#x:connectivity matrix
   names(edge.all) <- 1:length(x)#change label for each element
   
   #subset edges for certain brain regions
-  x1 <- lapply(1:length(x), function(y)t(x[[y]])[lower.tri(x[[y]])])#convert off-diagnal part of each connectivity matrix into a vector, do this for each frequency, https://stackoverflow.com/questions/70267887/extracting-upper-off-diagonal-elements-of-square-matrix-in-row-order
+  x1 <- lapply(1:length(x), function(y)x[[y]][upper.tri(x[[y]])])#convert off-diagnal part of each connectivity matrix into a vector, do this for each frequency, https://stackoverflow.com/questions/70267887/extracting-upper-off-diagonal-elements-of-square-matrix-in-row-order
   aa <- combn(1:p, 2)#https://stat.ethz.ch/R-manual/R-devel/library/utils/html/combn.html
   y1 <- ifelse(aa %% 2 == 0, 1, 0)
   # y2 <- ifelse(aa[1,] %in% 109:116 & aa[2,] %in% 109:116, 5, ifelse(aa %in% 109:116, 4,0))
