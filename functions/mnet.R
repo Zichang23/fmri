@@ -3,7 +3,7 @@ mnet <- function(x){#x:a list of connectivity matrix across different frequencie
   p <- ncol(x[[1]]) # number of columns (brain networks)
   
   #subset edges for certain brain regions
-  x1 <- lapply(1:length(x), function(y)x[[y]][lower.tri(x[[y]])])#convert off-diagonal part of each connectivity matrix into a vector, do this for each frequency
+  x1 <- lapply(1:length(x), function(y)x[[y]][upper.tri(x[[y]])])#convert off-diagonal part of each connectivity matrix into a vector, do this for each frequency
   aa <- combn(1:p, 2)#combn(x, m): Generate all combinations of the elements of x taken m at a time
   
   #generate the number of edges for VN1
