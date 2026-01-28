@@ -30,6 +30,7 @@ medge <- function(x){#x:connectivity matrix
   #generate the number of edges for vermis
   edge.v <- sapply(1:length(x), function(y)sum(x2[[y]][2,x2[[y]][1,]==5]==1))
   names(edge.v) <- 1:length(x)
-  result <- list("Total"=edge.all, "Left"=edge.l, "Right"=edge.r, "Inter"=edge.inter, "Vermis"=edge.v)#https://www.geeksforgeeks.org/r-lists/
+  result <- list("Total"=edge.all, "Left"=edge.l, "Right"=edge.r, "Inter"=edge.inter, "Vermis"=edge.v)
+  #https://www.geeksforgeeks.org/r-lists/
   return(result)
 }
