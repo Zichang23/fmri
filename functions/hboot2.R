@@ -27,7 +27,7 @@ check.dist <- function(x1, x2, alpha=0.05, B=100){#x1,x2 are vectors
   llik2 <- round(c(d7$mle_ori[2], d8$mle_ori[3]),5)
   dist2 <- c("Poisson", "nb")
   #dat5 <- data.frame(cbind(id, dist2, pval2, llik2))
-  dat1 <- data.frame(id = id, 
+  dat5 <- data.frame(id = id, 
                      dist2 = dist2, 
                      pval2 = pval2, 
                      llik2 = llik2, 
@@ -47,7 +47,7 @@ check.dist <- function(x1, x2, alpha=0.05, B=100){#x1,x2 are vectors
 
 #function to compare ASD gorup (x1) and control group (x2)
 comp.dist1 <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
-  aa <- check.dist1(x1,x2)
+  aa <- check.dist(x1,x2)
   dist1 <- as.numeric(aa[1,1])
   dist2 <- as.numeric(aa[2,1])
   if(dist1 !=dist2){
