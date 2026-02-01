@@ -11,9 +11,9 @@ check.dist <- function(x1, x2, alpha=0.05){#x1,x2 are vectors
   dist1 <- c("zip", "zinb", "Poisson", "nb")
   id <- 1:4
   dat1 <- data.frame(id = id, 
-                     dist = dist1, 
-                     pval = pval1, 
-                     llik = llik1, 
+                     dist1 = dist1, 
+                     pval1 = pval1, 
+                     llik1 = llik1, 
                      stringsAsFactors = FALSE )
   dat2 <- dat1[dat1$pval1 >=alpha,]
   dat3 <- dat2[dat2$llik1==max(as.numeric(dat2$llik1)),]

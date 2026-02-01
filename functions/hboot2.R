@@ -10,7 +10,11 @@ check.dist <- function(x1, x2, alpha=0.05, B=100){#x1,x2 are vectors
   llik1 <- round(c(d3$mle_ori[2], d4$mle_ori[3]),5)
   dist1 <- c("Poisson", "nb")
   id <- 1:2
-  dat1 <- data.frame(cbind(id, dist1, pval1, llik1))
+  dat1 <- data.frame(id = id, 
+                     dist1 = dist1, 
+                     pval1 = pval1, 
+                     llik1 = llik1, 
+                     stringsAsFactors = FALSE )
   dat2 <- dat1[dat1$pval1 >=alpha,]
   dat3 <- dat2[dat2$llik1==max(as.numeric(dat2$llik1)),]
   dat4 <- dat3[dat3$pval1==max(as.numeric(dat3$pval1)),]
@@ -64,8 +68,6 @@ comp.dist1 <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
           (mean(x2)>=quantile(boot.avg1,probs = c(0.025)) & mean(x2)<=quantile(boot.avg1,probs = c(0.975))) ){
         pval = 1
       }
-      # boot.stat <- abs(boot.avg1-boot.avg2)
-      # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
       hyp <- ifelse(pval>alpha, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
