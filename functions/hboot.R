@@ -10,7 +10,11 @@ check.dist <- function(x1, x2, alpha=0.05){#x1,x2 are vectors
   llik1 <- round(c(d1$mle_ori[3], d2$mle_ori[4], d3$mle_ori[2], d4$mle_ori[3]),5)
   dist1 <- c("zip", "zinb", "Poisson", "nb")
   id <- 1:4
-  dat1 <- data.frame(cbind(id, dist1, pval1, llik1))
+  dat1 <- data.frame(id = id, 
+                     dist = dist1, 
+                     pval = pval1, 
+                     llik = llik1, 
+                     stringsAsFactors = FALSE )
   dat2 <- dat1[dat1$pval1 >=alpha,]
   dat3 <- dat2[dat2$llik1==max(as.numeric(dat2$llik1)),]
   dat4 <- dat3[dat3$pval1==max(as.numeric(dat3$pval1)),]
@@ -157,7 +161,7 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
       r2 <- d2$mle_ori[1]
       p2 <- d2$mle_ori[2]
       prob2 <- d2$mle_ori[3]
-      boot.avg2 <- boot.znb.mean(r.est=r1,p.est=p2,prob.est=prob2,n,B,sn=1)
+      boot.avg2 <- boot.znb.mean(r.est=r2,p.est=p2,prob.est=prob2,n,B,sn=1)
       pval = 0
       if( (mean(x1)>=boot.avg2[[2]] & mean(x1)<=boot.avg2[[3]] ) || 
           (mean(x2)>=boot.avg1[[2]] & mean(x2)<=boot.avg1[[3]]) ){
