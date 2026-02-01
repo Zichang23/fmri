@@ -28,7 +28,12 @@ check.dist <- function(x1, x2, alpha=0.05){#x1,x2 are vectors
   pval2 <- c(d5$pvalue, d6$pvalue, d7$pvalue, d8$pvalue)
   llik2 <- round(c(d5$mle_ori[3], d6$mle_ori[4], d7$mle_ori[2], d8$mle_ori[3]),5)
   dist2 <- c("zip", "zinb", "Poisson", "nb")
-  dat5 <- data.frame(cbind(id, dist2, pval2, llik2))
+  #dat5 <- data.frame(cbind(id, dist2, pval2, llik2))
+  dat5 <- data.frame(id = id, 
+                     dist2 = dist2, 
+                     pval2 = pval2, 
+                     llik2 = llik2, 
+                     stringsAsFactors = FALSE )
   dat6 <- dat5[dat5$pval2 >=alpha,]
   dat7 <- dat6[dat6$llik2==max(as.numeric(dat6$llik2)),]
   dat8 <- dat7[dat7$pval2 == max(as.numeric(dat7$pval2)),]
