@@ -20,11 +20,11 @@ This page includes data and functions associated with the paper "High-dimensiona
 
 `mconn2` can be used to calculate connectivity matrix across certain frequencies. 
 
-`medge` can be used to calculate number of edges for certain brain regions. 
-
 `mnet` can be used to calculate number of edges for all brain networks. 
 
-`mpara` can be used to calculate number of edges for inter-hemispheric connections. 
+`medge` can be used to calculate number of edges for certain brain regions. 
+
+
 
 
 
