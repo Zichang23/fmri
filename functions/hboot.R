@@ -16,8 +16,9 @@ check.dist <- function(x1, x2, B=100, alpha=0.05){#x1,x2 are vectors
                      llik1 = llik1, 
                      stringsAsFactors = FALSE )
   dat2 <- dat1[dat1$pval1 >=alpha,]
-  dat3 <- dat2[dat2$llik1==max(as.numeric(dat2$llik1)),]
-  dat4 <- dat3[dat3$pval1==max(as.numeric(dat3$pval1)),]
+  if (nrow(dat2) == 0) dat2 <- dat1
+  dat3 <- dat2[dat2$llik1==max(dat2$llik1),]
+  dat4 <- dat3[dat3$pval1==max(dat3$pval1),]
   avg1 <- round(mean(x1),4)
   var1 <- round(var(x1),4)
   result1 <- cbind(dat4[,1:2], avg1, var1)
@@ -35,8 +36,9 @@ check.dist <- function(x1, x2, B=100, alpha=0.05){#x1,x2 are vectors
                      llik2 = llik2, 
                      stringsAsFactors = FALSE )
   dat6 <- dat5[dat5$pval2 >=alpha,]
-  dat7 <- dat6[dat6$llik2==max(as.numeric(dat6$llik2)),]
-  dat8 <- dat7[dat7$pval2 == max(as.numeric(dat7$pval2)),]
+  if (nrow(dat6) == 0) dat6 <- dat5
+  dat7 <- dat6[dat6$llik2==max(dat6$llik2),]
+  dat8 <- dat7[dat7$pval2 == max(dat7$pval2),]
   avg2 <- round(mean(x2),4)
   var2 <- round(var(x2),4)
   result2 <- cbind(dat8[,1:2], avg2, var2)
@@ -122,7 +124,7 @@ boot.znb.mean = function(r.est,p.est,prob.est,n=100,B=500,sn){
 } # end function boot.znb.mean
 
 comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
-  aa <- check.dist(x1, x2, B=100, alpha=0.05)
+  aa <- check.dist(x1, x2, B, alpha)
   dist1 <- as.numeric(aa[1,1])
   dist2 <- as.numeric(aa[2,1])
   if(dist1 !=dist2){
