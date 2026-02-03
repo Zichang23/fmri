@@ -68,12 +68,12 @@ comp.dist1 <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
       lambda2 <- d2$mle_ori[1]
       dat2 <- matrix(rpois(n*B, lambda2), nrow=n, ncol=B)
       boot.avg2 <- colMeans(dat2)
-      pval = 0
+      overlap_flag = 0
       if( (mean(x1)>=quantile(boot.avg2,probs = c(0.025)) & mean(x1)<=quantile(boot.avg2,probs = c(0.975)) ) || 
           (mean(x2)>=quantile(boot.avg1,probs = c(0.025)) & mean(x2)<=quantile(boot.avg1,probs = c(0.975))) ){
-        pval = 1
+        overlap_flag = 1
       }
-      hyp <- ifelse(pval>alpha, "H0", "H1")
+      hyp <- ifelse(overlap_flag==1, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
@@ -93,14 +93,14 @@ comp.dist1 <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
       p2 <- d2$mle_ori[2]
       dat2 <- matrix(rnbinom(n*B, r2, p2), nrow=n, ncol=B)
       boot.avg2 <- colMeans(dat2)
-      pval = 0
+      overlap_flag = 0
       if( (mean(x1)>=quantile(boot.avg2,probs = c(0.025)) & mean(x1)<=quantile(boot.avg2,probs = c(0.975)) ) || 
           (mean(x2)>=quantile(boot.avg1,probs = c(0.025)) & mean(x2)<=quantile(boot.avg1,probs = c(0.975))) ){
-        pval = 1
+        overlap_flag = 1
       }
       # boot.stat <- abs(boot.avg1-boot.avg2)
       # pval <- mean(boot.stat >= abs(mean(x1)-mean(x2)))
-      hyp <- ifelse(pval>alpha, "H0", "H1")
+      hyp <- ifelse(overlap_flag==1, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
