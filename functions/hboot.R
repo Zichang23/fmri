@@ -1,13 +1,13 @@
 library(iZID)
 
 #step 1
-check.dist <- function(x1, x2, alpha=0.05){#x1,x2 are vectors
-  d1=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='zip')
-  d2=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='zinb')
-  d3=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='Poisson')
-  d4=dis.kstest(x1,nsim=100,bootstrap=TRUE,distri='nb')
+check.dist <- function(x1, x2, B=100, alpha=0.05){#x1,x2 are vectors
+  d1=dis.kstest(x1,nsim=B,bootstrap=TRUE,distri='zip')
+  d2=dis.kstest(x1,nsim=B,bootstrap=TRUE,distri='zinb')
+  d3=dis.kstest(x1,nsim=B,bootstrap=TRUE,distri='Poisson')
+  d4=dis.kstest(x1,nsim=B,bootstrap=TRUE,distri='nb')
   pval1 <- c(d1$pvalue, d2$pvalue, d3$pvalue, d4$pvalue)
-  llik1 <- round(c(d1$mle_ori[3], d2$mle_ori[4], d3$mle_ori[2], d4$mle_ori[3]),5)
+  llik1 <- c(d1$mle_ori[3], d2$mle_ori[4], d3$mle_ori[2], d4$mle_ori[3])
   dist1 <- c("zip", "zinb", "Poisson", "nb")
   id <- 1:4
   dat1 <- data.frame(id = id, 
@@ -21,12 +21,12 @@ check.dist <- function(x1, x2, alpha=0.05){#x1,x2 are vectors
   avg1 <- round(mean(x1),4)
   var1 <- round(var(x1),4)
   result1 <- cbind(dat4[,1:2], avg1, var1)
-  d5=dis.kstest(x2,nsim=100,bootstrap=TRUE, distri='zip')
-  d6=dis.kstest(x2,nsim=100,bootstrap=TRUE, distri='zinb')
-  d7=dis.kstest(x2,nsim=100,bootstrap=TRUE, distri='Poisson')
-  d8=dis.kstest(x2,nsim=100,bootstrap=TRUE, distri='nb')
+  d5=dis.kstest(x2,nsim=B,bootstrap=TRUE, distri='zip')
+  d6=dis.kstest(x2,nsim=B,bootstrap=TRUE, distri='zinb')
+  d7=dis.kstest(x2,nsim=B,bootstrap=TRUE, distri='Poisson')
+  d8=dis.kstest(x2,nsim=B,bootstrap=TRUE, distri='nb')
   pval2 <- c(d5$pvalue, d6$pvalue, d7$pvalue, d8$pvalue)
-  llik2 <- round(c(d5$mle_ori[3], d6$mle_ori[4], d7$mle_ori[2], d8$mle_ori[3]),5)
+  llik2 <- c(d5$mle_ori[3], d6$mle_ori[4], d7$mle_ori[2], d8$mle_ori[3])
   dist2 <- c("zip", "zinb", "Poisson", "nb")
   #dat5 <- data.frame(cbind(id, dist2, pval2, llik2))
   dat5 <- data.frame(id = id, 
@@ -122,7 +122,7 @@ boot.znb.mean = function(r.est,p.est,prob.est,n=100,B=500,sn){
 } # end function boot.znb.mean
 
 comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
-  aa <- check.dist(x1,x2)
+  aa <- check.dist(x1, x2, B=100, alpha=0.05)
   dist1 <- as.numeric(aa[1,1])
   dist2 <- as.numeric(aa[2,1])
   if(dist1 !=dist2){
@@ -143,12 +143,12 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
       prob2 <- d2$mle_ori[2]
       boot.avg2 <- boot.zip.mean(lambda.est=lambda2,prob.est=prob2,n,B,sn=1)
       
-      pval = 0
+      overlap_flag = 0
       if( (mean(x1)>=boot.avg2[[2]] & mean(x1)<=boot.avg2[[3]] ) || 
           (mean(x2)>=boot.avg1[[2]] & mean(x2)<=boot.avg1[[3]]) ){
-        pval = 1
+        overlap_flag = 1
       }
-      hyp <- ifelse(pval>alpha, "H0", "H1")
+      hyp <- ifelse(overlap_flag==1, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
@@ -167,12 +167,12 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
       p2 <- d2$mle_ori[2]
       prob2 <- d2$mle_ori[3]
       boot.avg2 <- boot.znb.mean(r.est=r2,p.est=p2,prob.est=prob2,n,B,sn=1)
-      pval = 0
+      overlap_flag = 0
       if( (mean(x1)>=boot.avg2[[2]] & mean(x1)<=boot.avg2[[3]] ) || 
           (mean(x2)>=boot.avg1[[2]] & mean(x2)<=boot.avg1[[3]]) ){
-        pval = 1
+        overlap_flag = 1
       }
-      hyp <- ifelse(pval>alpha, "H0", "H1")
+      hyp <- ifelse(overlap_flag==1, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
@@ -190,12 +190,12 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
       lambda2 <- d2$mle_ori[1]
       dat2 <- matrix(rpois(n*B, lambda2), nrow=n, ncol=B)
       boot.avg2 <- colMeans(dat2)
-      pval = 0
+      overlap_flag = 0
       if( (mean(x1)>=quantile(boot.avg2,probs = c(0.025)) & mean(x1)<=quantile(boot.avg2,probs = c(0.975)) ) || 
           (mean(x2)>=quantile(boot.avg1,probs = c(0.025)) & mean(x2)<=quantile(boot.avg1,probs = c(0.975))) ){
-        pval = 1
+        overlap_flag = 1
       }
-      hyp <- ifelse(pval>alpha, "H0", "H1")
+      hyp <- ifelse(overlap_flag==1, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
@@ -215,12 +215,12 @@ comp.dist <- function(x1, x2, alpha=0.05, B=500){#x1,x2 are vectors
       p2 <- d2$mle_ori[2]
       dat2 <- matrix(rnbinom(n*B, r2, p2), nrow=n, ncol=B)
       boot.avg2 <- colMeans(dat2)
-      pval = 0
+      overlap_flag = 0
       if( (mean(x1)>=quantile(boot.avg2,probs = c(0.025)) & mean(x1)<=quantile(boot.avg2,probs = c(0.975)) ) || 
           (mean(x2)>=quantile(boot.avg1,probs = c(0.025)) & mean(x2)<=quantile(boot.avg1,probs = c(0.975))) ){
-        pval = 1
+        overlap_flag = 1
       }
-      hyp <- ifelse(pval>alpha, "H0", "H1")
+      hyp <- ifelse(overlap_flag==1, "H0", "H1")
       avg1 <- round(mean(x1),4)
       avg2 <- round(mean(x2),4)
       result <- data.frame(hyp, avg1, avg2)
