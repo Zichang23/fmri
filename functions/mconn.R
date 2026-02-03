@@ -5,18 +5,18 @@ mconn <-  function(x, alpha=0.05, s, tt){
   #x: time series matrix, s: segments, t: partition time point 
   p <- ncol(x)
   n <- nrow(x)
-  m <- matrix(NA, ncol = p, nrow = p)
   
   ff <-  function(x){
     m <- floor(sqrt(dim(x)[1]))
     mspec  <-  mvspec(x, spans=c(2*m+1,2*m+1), kernel="daniell", plot=F)
     Fstat <- apply(mspec$coh, 2, function(y)(y/(1-y))*(2*m))
     pval <- 1-pf(Fstat, 2, 2*(2*m+1) - 2)
-    pval1 <- sapply(1:ncol(pval), function(x) p.adjust(pval[,x], method = "bonferroni", n=2*length(pval[,x])))
+    pval1 <- sapply(1:ncol(pval), function(j) p.adjust(pval[,j], method = "bonferroni", n=2*length(pval[,j])))
     Conn <- ifelse(pval1 < alpha, 1, 0)
     nn <- nrow(Conn)
     
     fun <- function(fx){
+      m11 <- matrix(0, ncol = p, nrow = p)
       # Create a vector with appropriate length
       vec <- Conn[fx,]  # Length of upper diagonal (excluding main diagonal)
       # Get indices of upper diagonal (excluding main diagonal)
@@ -35,10 +35,10 @@ mconn <-  function(x, alpha=0.05, s, tt){
   
   
   if(s==0){
-    ff(x)
+    return(ff(x))
   }
   
-  else if(s==1){
+  if(s==1){
     t1 <- tt+1
     m1 <- ff(x[1:tt,])
     m2 <- ff(x[t1:n,])
@@ -74,10 +74,10 @@ mconn <-  function(x, alpha=0.05, s, tt){
       return(result)
     }
   }
-  else if(s==2){
-    if(s==2 & length(tt)==1){
-      print("Wrong input: if s=2, tt should be a vector with 2 elements")
-    }else{
+  if(s==2){
+    if(length(tt)!=2){
+      stop("Wrong input: if s=2, tt should be a vector with 2 elements")
+    }
     t1 <- tt[1]+1
     t2 <- tt[2]+1
     m1 <- ff(x[1:tt[1],])
@@ -137,7 +137,6 @@ mconn <-  function(x, alpha=0.05, s, tt){
       }
       result <- lapply(1:length(freq3), f5)
       return(result)
-    }
     }
   }
 }
