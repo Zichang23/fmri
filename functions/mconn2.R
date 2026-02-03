@@ -1,22 +1,25 @@
 library(astsa)
 
-#create function mconn to calculate connectivity matrix
 mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
   #x: time series matrix (no need to standardize), s: segments, t: partition time point , freq0: specific frequencies
   p <- ncol(x)
   n <- nrow(x)
-  m11 <- matrix(NA, ncol = p, nrow = p)
   
   ff <-  function(x){
     m <- floor(sqrt(dim(x)[1]))
+    
     mspec  <-  mvspec(x, spans=c(2*m+1,2*m+1), kernel="daniell", plot=F)
     Fstat <- apply(mspec$coh, 2, function(y)(y/(1-y))*(2*m))
     pval <- 1-pf(Fstat, 2, 2*(2*m+1) - 2)
     pval1 <- sapply(1:ncol(pval), function(x) p.adjust(pval[,x], method = "bonferroni", n=2*length(pval[,x])))
+    #pval1 <- sapply(1:ncol(pval), function(x) p.adjust(pval[,x], method = "fdr", n=2*length(pval[,x])))
+    # methods: BH, BY, bonferroni
     Conn <- ifelse(pval1 < alpha, 1, 0)
+    
     nn <- nrow(Conn)
     
     fun <- function(fx){
+      m11 <- matrix(0, ncol = p, nrow = p)
       # Create a vector with appropriate length
       vec <- Conn[fx,]  # Length of upper diagonal (excluding main diagonal)
       # Get indices of upper diagonal (excluding main diagonal)
@@ -32,7 +35,9 @@ mconn2 <-  function(x, alpha=0.05, s, tt, freq0){
     result <- lapply(1:nn, fun)
     return(result)
   }
+  
   if(s==0){
+    # if(s==0 && tt==0){stop("Wrong input: if s=0, please type tt=0")}else{ff(x)}
     result <- ff(x)
     freq1 <- (1:floor(n/2))/n
     combo0 <- abs(outer(freq1, freq0, "-"))
