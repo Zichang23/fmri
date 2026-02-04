@@ -10,8 +10,6 @@ This page includes data and functions associated with the paper "High-dimensiona
 
 #### Functions
 
-`h2part` can be used to conduct hypothesis test comparing distributions (Poisson, Negative Binomial, Zero-Inflated Poisson, and Zero-Inflated Negative Binomial) of edge counts for ASD group and control group according to paper Togo et al.
-
 `hboot` can be used to conduct hypothesis test comparing distributions (Poisson, Negative Binomial, Zero-Inflated Poisson, and Zero-Inflated Negative Binomial) of edge counts for ASD group and control group using bootstrap confidence intervals. 
 
 `hboot2` can be used to conduct hypothesis test comparing distributions (Poisson and Negative Binomial) of edge counts for ASD group and control group using bootstrap confidence intervals. 
